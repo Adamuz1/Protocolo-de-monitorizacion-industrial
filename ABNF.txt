@@ -4,7 +4,7 @@ protocol-message = request / response
 ; --- Peticiones (Sensor -> Servidor) ---
 request      = method SP sensor-id SP timestamp SP payload CRLF
 method       = "MEAS" / "CONF" / "QUERY"
-sensor-id    = 1*16(ALPHA / DIGIT / "-") ; ID único del sensor [cite: 197]
+sensor-id    = 1*16(ALPHA / DIGIT / "-") ; ID único del sensor 
 timestamp    = 10DIGIT                  ; Unix Epoch time
 payload      = measurement-data / config-data / query-data
 
@@ -23,7 +23,7 @@ max-val          = value
 response     = status-code SP description CRLF
 status-code  = "200" / "400" / "403" / "500"
 ; 200: OK (ACK) [cite: 25]
-; 400: Error de formato (NACK) [cite: 64, 65]
+; 400: Error de formato (NACK) 
 ; 403: Sensor no autorizado o desconocido
 ; 500: Error interno del servidor
 
