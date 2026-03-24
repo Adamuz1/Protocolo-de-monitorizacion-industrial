@@ -9,7 +9,7 @@ public class server_industrial {
             //Creacion del socket
             DatagramSocket socketUDP = new DatagramSocket(PUERTO);
 
-            //Siempre atendera peticiones
+            //Siempre atendera peticiones.
             while (true) {
                 
                 //Preparo la respuesta
