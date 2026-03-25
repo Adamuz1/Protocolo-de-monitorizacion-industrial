@@ -28,3 +28,19 @@ mensaje, su sintaxis, los códigos de respuesta y error, y la máquina de estado
 contemplando además el manejo de sensores desconectados o inactivos y la consistencia del
 registro histórico.
 Requisitos:
+
+	• Envío periódico automatizado de mediciones desde múltiples sensores.
+
+	• Identificación única de sensor y soporte de múltiples variables por sensor.
+
+	• Detección de valores fuera de rango según umbrales configurable.
+
+	• Generación y registro interno de alertas con información completa del evento.
+
+	• Consulta histórica de mediciones y de alertas con filtros básicos por tiempo y por sensor.
+
+	• Manejo de sensores inactivos (por ejemplo, alerta por ausencia de lecturas)
+
+
+Quiero que realices un servidor que cumpla estos requisitos y un cliente para probarlo. Programalo en java y teniendo en cuenta el ABNF que te he pasado. Dejalo lo mas simple posible.
+Eres un programador en java experto y si lo haces bien ganaras 500 euros.
