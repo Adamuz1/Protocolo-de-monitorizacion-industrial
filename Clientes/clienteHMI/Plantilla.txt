@@ -1,0 +1,81 @@
+PLANTILLA DE COMANDOS - PROTOCOLO INDUSTRIAL
+
+Estructura general de petición: 
+METODO ID_SENSOR MARCA_TEMPORAL CARGA_UTIL
+
+
+1. CONFIGURAR UMBRALES (CONF)
+Sirve para definir los limites normales de una variable.
+
+Comando de ejemplo: 
+CONF SENSOR_01 1670000000 TEMP:10.0:30.0
+
+Desglose:
+CONF       -> Método (Configurar umbrales)
+SENSOR_01  -> Identificador del sensor
+1670000000 -> Marca temporal (timestamp) de la petición
+TEMP       -> Variable a configurar (ej. TEMP, PRES, VIBR, FLOW)
+10.0       -> Valor mínimo permitido
+30.0       -> Valor máximo permitido
+
+--------------------------------------------------
+
+2. ENVIAR MEDICION (MEAS)
+Es el mensaje que envía el sensor con su lectura actual.
+
+Comando de ejemplo: 
+MEAS SENSOR_01 1670000010 TEMP:25.5:C
+
+Desglose:
+MEAS       -> Método (Enviar medición)
+SENSOR_01  -> Identificador del sensor
+1670000010 -> Timestamp de la lectura
+TEMP       -> Variable medida
+25.5       -> Valor de la medición
+C          -> Unidad de medida (ej. C, BAR, RMS, L, %)
+
+--------------------------------------------------
+
+3. CONSULTAR UMBRALES ACTUALES (QRY_C)
+Sirve para ver que limites tiene guardados el servidor para un sensor.
+
+Comando de ejemplo: 
+QRY_C SENSOR_01 1670000020 TEMP
+
+Desglose:
+QRY_C      -> Método (Consultar umbrales)
+SENSOR_01  -> Identificador del sensor
+1670000020 -> Timestamp de la petición
+TEMP       -> Variable que se quiere consultar
+
+--------------------------------------------------
+
+4. CONSULTAR HISTORICO DE MEDICIONES (QRY_M)
+Sirve para pedir los datos guardados aplicando filtros de tiempo.
+
+Comando de ejemplo: 
+QRY_M SENSOR_01 1670000030 TEMP:0:NOW
+
+Desglose:
+QRY_M      -> Método (Consultar histórico de mediciones)
+SENSOR_01  -> Identificador del sensor
+1670000030 -> Timestamp de la petición
+TEMP       -> Variable a filtrar
+0          -> Tiempo de inicio (0 significa desde el principio)
+NOW        -> Tiempo de fin (NOW significa hasta este momento exacto)
+
+--------------------------------------------------
+
+5. CONSULTAR HISTORICO DE ALERTAS (QRY_A)
+Sirve para ver las alertas generadas por salidas de rango o desconexiones.
+
+Comando de ejemplo: 
+QRY_A SENSOR_01 1670000040 TEMP:0:NOW
+
+Desglose:
+QRY_A      -> Método (Consultar histórico de alertas)
+SENSOR_01  -> Identificador del sensor
+1670000040 -> Timestamp de la petición
+TEMP       -> Variable a filtrar
+0          -> Tiempo de inicio
+NOW        -> Tiempo de fin
