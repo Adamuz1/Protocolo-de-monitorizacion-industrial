@@ -101,3 +101,16 @@ QRY_M SENSOR_01 1670000030 TEMP:0:NOW
 
 Consultar alertas generadas:
 QRY_A SENSOR_01 1670000040 TEMP:0:NOW
+
+Entra una medición: MEAS SENS_TEMP_01 1670000000 TEMP:60.0:C
+
+Resultado: ALERTA. El servidor usa el predeterminado (0 - 50) porque no hay nada configurado.
+
+Tú decides modificar el umbral según tu ABNF: CONF SENS_TEMP_01 1670000010 TEMP:0.0:70.0
+
+Resultado: 200 OK. El servidor le asigna este nuevo umbral exclusivo a SENS_01.
+
+Entra otra medición igual: MEAS SENS_TEMP_01 1670000020 TEMP:60.0:C
+
+Resultado: NO HAY ALERTA. El servidor ignora la regla de los 50ºC y usa tu nueva regla de los 70ºC.
+
