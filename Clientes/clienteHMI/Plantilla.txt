@@ -79,3 +79,25 @@ SENSOR_01  -> Identificador del sensor
 TEMP       -> Variable a filtrar
 0          -> Tiempo de inicio
 NOW        -> Tiempo de fin
+
+--------------------------------------------------
+
+6. EJEMPLOS DE USO
+
+Configurar umbral:
+CONF SENSOR_01 1670000000 TEMP:10.0:30.0
+
+Consultar configuración:
+QRY_C SENSOR_01 1670000000 TEMP
+
+Enviar medición correcta:
+MEAS SENSOR_01 1670000010 TEMP:25.5:C
+
+Enviar medición fuera de rango (dispara alerta):
+MEAS SENSOR_01 1670000020 TEMP:45.0:C
+
+Consultar histórico de mediciones:
+QRY_M SENSOR_01 1670000030 TEMP:0:NOW
+
+Consultar alertas generadas:
+QRY_A SENSOR_01 1670000040 TEMP:0:NOW
