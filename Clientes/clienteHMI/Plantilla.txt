@@ -102,6 +102,8 @@ QRY_M SENSOR_01 1670000030 TEMP:0:NOW
 Consultar alertas generadas:
 QRY_A SENSOR_01 1670000040 TEMP:0:NOW
 
+-------------------------------------
+
 Entra una medición: MEAS SENS_TEMP_01 1670000000 TEMP:60.0:C
 
 Resultado: ALERTA. El servidor usa el predeterminado (0 - 50) porque no hay nada configurado.
@@ -113,4 +115,26 @@ Resultado: 200 OK. El servidor le asigna este nuevo umbral exclusivo a SENS_01.
 Entra otra medición igual: MEAS SENS_TEMP_01 1670000020 TEMP:60.0:C
 
 Resultado: NO HAY ALERTA. El servidor ignora la regla de los 50ºC y usa tu nueva regla de los 70ºC.
+
+----------------------------------------
+
+Comprobación tanque de agua
+Simular que el tanque se va vaciando poco a poco, comandos en orden:
+
+El tanque está lleno (Todos en 1):
+MEAS TANQUE_A 1670000000 HUM3:1.0:%
+MEAS TANQUE_A 1670000000 HUM2:1.0:%
+MEAS TANQUE_A 1670000000 HUM1:1.0:%
+
+Baja de nivel, se seca el sensor superior (HUM3 a 0): (No hay alerta, está por la mitad).
+MEAS TANQUE_A 1670000010 HUM3:0.0:%
+
+Baja más, se seca el sensor del medio (HUM2 a 0): (Generará la alerta "LOW_WATER").
+MEAS TANQUE_A 1670000020 HUM2:0.0:%
+
+Se vacía por completo (HUM1 a 0): (Generará la alerta "TANK_EMPTY").
+MEAS TANQUE_A 1670000030 HUM1:0.0:%
+
+Si después de esto vas al servidor y pides el histórico o envías el comando QRY_A TANQUE_A 1670000040 HUM2:0:NOW o bien 
+QRY_A TANQUE_A 1670000040 HUM1:0:NOW, el sistema ha registrado y guardado las nuevas razones de alerta personalizadas.
 
