@@ -97,6 +97,7 @@ public class ClienteIndustrial {
 
     private static void mostrarMenu() {
         System.out.println("\n--- MENÚ DE OPERACIONES HMI ---");
+        System.out.println("\n(Las variables actuales son: TEMP,HUMX,VIBR,PRES)");
         System.out.println("1. Configurar Umbrales (CONF)");
         System.out.println("2. Consultar Umbrales Actuales (QRY_C)");
         System.out.println("3. Histórico de Mediciones (QRY_M)");
