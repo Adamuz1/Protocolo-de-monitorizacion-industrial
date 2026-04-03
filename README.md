@@ -1,2 +1,40 @@
 # Protocolo-de-monitorizacio-n-industrial-de-sensores-con-umbrales-y-generacio-n-de-alertas
-Creación de protocolo de monitorización industrial.
+
+Se deberá diseñar un protocolo de aplicación orientado a un entorno de planta industrial, donde múltiples clientes simulen sensores que envían periódicamente mediciones a un servidor central.
+
+Cada sensor deberá estar identificado de forma unívoca según el protocolo y deberá asociarse a un conjunto de variables industriales (por ejemplo, temperatura, vibración, caudal, presión) con unidades y rangos operativos definidos.
+
+
+El servidor será responsable de recibir y almacenar las mediciones, mantener el estado más reciente de cada sensor y analizar los valores en función de umbrales configurables. Cuando una medición supere un umbral o viole una regla definida (por ejemplo, fuera de rango, cambio brusco, ausencia de lecturas), el servidor deberá generar una alerta estructurada, registrarla internamente y permitir su consulta posterior. El protocolo deberá contemplar tanto la recepción periódica de datos como operaciones de consulta (últimas mediciones, histórico, alertas activas o pasadas) y, si se define, la configuración de umbrales por sensor o por tipo de variable.
+
+
+El protocolo deberá especificar formalmente:
+
+* El formato del envío de mediciones, incluyendo identificación de sensor, variable medida, valor y marca temporal.
+
+* La confirmación o rechazo estructurado de mediciones inválidas (sensor desconocido,formato incorrecto, unidad no permitida, etc.).
+
+* El mecanismo de configuración y consulta de umbrales/reglas de alerta.
+
+* El formato de las alertas generadas y su correlación con sensor, variable y evento que las dispara.
+
+* La consulta de histórico de mediciones y de alertas, con criterios básicos de filtrado (por sensor, variable, intervalo temporal).
+
+Toda operación deberá validarse respecto al estado interno mantenido por el servidor,
+generando respuestas estructuradas. El diseño deberá incluir la definición formal de tipos de mensaje, su sintaxis, los códigos de respuesta y error, y la máquina de estados del servidor, contemplando además el manejo de sensores desconectados o inactivos y la consistencia del registro histórico.
+
+
+Requisitos:
+
+* Envío periódico automatizado de mediciones desde múltiples sensores.
+
+* Identificación única de sensor y soporte de múltiples variables por sensor.
+
+* Detección de valores fuera de rango según umbrales configurable.
+
+* Generación y registro interno de alertas con información completa del evento.
+
+* Consulta histórica de mediciones y de alertas con filtros básicos por tiempo y por sensor.
+
+* Manejo de sensores inactivos (por ejemplo, alerta por ausencia de lecturas)
+
