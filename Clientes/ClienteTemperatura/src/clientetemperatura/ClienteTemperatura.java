@@ -10,7 +10,7 @@ import java.util.Locale;
 public class ClienteTemperatura {
 
     public static void main(String[] args) {
-        final String IP_SERVIDOR = "localhost";
+        final String IP_SERVIDOR = "localhost";//"192.168.1.121";
         final int PUERTO_SERVIDOR = 5000;
         final String SENSOR_ID = "SENS_TEMP_01";
         
@@ -23,22 +23,22 @@ public class ClienteTemperatura {
             System.out.println("--- Iniciado Sensor de Temperatura (UDP) ---");
 
             while (true) {
-                // 1. Simular cambio físico (ej. sube o baja un poco aleatoriamente)
+                // Simular cambio físico (ej. sube o baja un poco aleatoriamente)
                 temperaturaActual += (float) (Math.random() - 0.5); 
 
-                // 2. Construir el mensaje según el ABNF
+                // Construir el mensaje según el ABNF
                 long timestamp = System.currentTimeMillis() / 1000L;
                 String valorStr = String.format(Locale.US, "%.1f", temperaturaActual);
                 
                 String mensaje = "MEAS " + SENSOR_ID + " " + timestamp + " TEMP:" + valorStr + ":C\r\n";
                 byte[] bufferEnvio = mensaje.getBytes();
 
-                // 3. Enviar el Datagrama
+                // Enviar el Datagrama
                 DatagramPacket paqueteEnvio = new DatagramPacket(bufferEnvio, bufferEnvio.length, direccionServidor, PUERTO_SERVIDOR);
                 socketUDP.send(paqueteEnvio);
                 System.out.print("[Tx] " + mensaje);
 
-                // 4. Esperar Respuesta (ACK) del Servidor
+                // Esperar Respuesta (ACK) del Servidor
                 try {
                     byte[] bufferRecepcion = new byte[1024];
                     DatagramPacket paqueteRecepcion = new DatagramPacket(bufferRecepcion, bufferRecepcion.length);

@@ -108,7 +108,7 @@ public class ClienteIndustrial {
 
     private static void procesarComando(DatagramSocket conectorUDP, InetAddress ipServidor, int puertoServidor, String comandoABNF) {
         try {
-            // Añadimos el salto de línea por si el servidor es estricto con el protocolo
+            // Añadimos el salto de línea
             String comandoFinal = comandoABNF + "\r\n";
             byte[] buferEnvio = comandoFinal.getBytes();
             

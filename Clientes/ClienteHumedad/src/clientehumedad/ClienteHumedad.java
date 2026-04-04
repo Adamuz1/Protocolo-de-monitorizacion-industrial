@@ -22,7 +22,7 @@ public class ClienteHumedad {
             System.out.println("--- Iniciado Sensor de Humedad (3 Niveles Discretos) ---");
 
             while (true) {
-                // 1. Simulación física: El tanque se llena hasta 3 y luego se vacía hasta 0
+                // Simulación física: El tanque se llena hasta 3 y luego se vacía hasta 0
                 if (llenando) {
                     nivelAguaSimulado++;
                     if (nivelAguaSimulado >= 3) llenando = false;
@@ -31,7 +31,7 @@ public class ClienteHumedad {
                     if (nivelAguaSimulado <= 0) llenando = true;
                 }
 
-                // 2. Lógica interna de los 3 sensores físicos (Cascada de 1s y 0s)
+                // Lógica interna de los 3 sensores físicos (Cascada de 1s y 0s)
                 int hum1 = (nivelAguaSimulado >= 1) ? 1 : 0;
                 int hum2 = (nivelAguaSimulado >= 2) ? 1 : 0;
                 int hum3 = (nivelAguaSimulado >= 3) ? 1 : 0;
@@ -40,7 +40,7 @@ public class ClienteHumedad {
                 
                 System.out.println("Nivel físico del tanque: " + nivelAguaSimulado + "/3");
 
-                // 3. Enviar la información al Servidor usando el ABNF acordado (Enviamos 1 o 0 con unidad %)
+                // Enviar la información al Servidor usando el ABNF acordado (Enviamos 1 o 0 con unidad %)
                 enviarMedicion(socketUDP, direccionServidor, PUERTO_SERVIDOR, SENSOR_ID, timestamp, "HUM1", String.valueOf(hum1), "%");
                 enviarMedicion(socketUDP, direccionServidor, PUERTO_SERVIDOR, SENSOR_ID, timestamp, "HUM2", String.valueOf(hum2), "%");
                 enviarMedicion(socketUDP, direccionServidor, PUERTO_SERVIDOR, SENSOR_ID, timestamp, "HUM3", String.valueOf(hum3), "%");

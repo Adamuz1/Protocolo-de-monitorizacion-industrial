@@ -23,23 +23,23 @@ public class ClienteVibracion {
             System.out.println("--- Iniciado Sensor de Vibración de Batidora (UDP) ---");
 
             while (true) {
-                // 1. Simular cambio físico (Añade "ruido" a la vibración)
+                // Simular cambio físico (Añade "ruido" a la vibración)
                 vibracionActual += (float) ((Math.random() * 0.4) - 0.2); 
                 if (vibracionActual < 0) vibracionActual = 0; // No hay vibración negativa
 
-                // 2. Construir el mensaje según el ABNF
+                // Construir el mensaje según el ABNF
                 long timestamp = System.currentTimeMillis() / 1000L;
                 String valorStr = String.format(Locale.US, "%.1f", vibracionActual);
                 
                 String mensaje = "MEAS " + SENSOR_ID + " " + timestamp + " VIBR:" + valorStr + ":RMS\r\n";
                 byte[] bufferEnvio = mensaje.getBytes();
 
-                // 3. Enviar el Datagrama
+                // Enviar el Datagrama
                 DatagramPacket paqueteEnvio = new DatagramPacket(bufferEnvio, bufferEnvio.length, direccionServidor, PUERTO_SERVIDOR);
                 socketUDP.send(paqueteEnvio);
                 System.out.print("[Tx] " + mensaje);
 
-                // 4. Esperar Respuesta (ACK) del Servidor
+                // Esperar Respuesta (ACK) del Servidor
                 try {
                     byte[] bufferRecepcion = new byte[1024];
                     DatagramPacket paqueteRecepcion = new DatagramPacket(bufferRecepcion, bufferRecepcion.length);
