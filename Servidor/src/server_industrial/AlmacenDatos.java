@@ -1,11 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/**
- *
- * @author anton
- */
 package server_industrial;
 
 import java.util.ArrayList;
@@ -14,6 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 public class AlmacenDatos {
+
+    public static Map<String, double[]> umbralesGenerales = new HashMap<>();
+
+    static {
+        umbralesGenerales.put("TEMP", new double[]{0.0, 50.0});   // Temperatura normal: entre 0 y 50 ºC
+        umbralesGenerales.put("PRES", new double[]{0.5, 2.5});    // Presión normal: entre 0.5 y 2.5 BAR
+        umbralesGenerales.put("VIBR", new double[]{0.0, 10.0});   // Vibración normal: entre 0 y 10 RMS
+        // Añadimos los límites base para los sensores binarios de humedad (0 o 1)
+        umbralesGenerales.put("HUM1", new double[]{0.0, 1.0});
+        umbralesGenerales.put("HUM2", new double[]{0.0, 1.0});
+        umbralesGenerales.put("HUM3", new double[]{0.0, 1.0});
+    }
 
     public static class Medicion {
 

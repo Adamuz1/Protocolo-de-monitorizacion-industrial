@@ -25,12 +25,28 @@ public class server_industrial {
         while (!salir) {
             System.out.println("\n--- Panel de Control ---");
             System.out.println("1. Ver métricas del servidor");
+            System.out.println("2. Ver todas las mediciones (Historial completo)");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
 
             String entrada = escaner.nextLine();
 
             switch (entrada) {
+                case "2" -> {
+                    System.out.println("\n[REGISTRO COMPLETO DE MEDICIONES]");
+                    if (AlmacenDatos.historialMediciones.isEmpty()) {
+                        System.out.println("El historial está vacío. Aún no se han recibido datos.");
+                    } else {
+                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        for (AlmacenDatos.Medicion m : AlmacenDatos.historialMediciones) {
+                            String fecha = sdf.format(new java.util.Date(m.marcaTemporal));
+                            System.out.println("Sensor: " + m.idSensor
+                                    + " | Variable: " + m.variable
+                                    + " | Valor: " + m.valor + " " + m.unidad
+                                    + " | Fecha: " + fecha);
+                        }
+                    }
+                }
                 case "1" -> {
                     System.out.println("\n[MÉTRICAS]");
                     System.out.println("Sensores activos registrados: " + AlmacenDatos.ultimaActividad.size());
@@ -62,7 +78,7 @@ public class server_industrial {
                 String mensaje = new String(peticion.getData(), 0, peticion.getLength());
                 String respuestaCadena = ProcesadorProtocolo.procesar(mensaje);
 
-                bufer = (respuestaCadena + "\r\n").getBytes(); // Finaliza con CRLF según la norma
+                bufer = (respuestaCadena + "\r\n").getBytes(); // Finaliza con CRLF
 
                 int puertoCliente = peticion.getPort();
                 InetAddress direccion = peticion.getAddress();
@@ -89,7 +105,7 @@ public class server_industrial {
             long ahora = System.currentTimeMillis();
             for (String idSensor : AlmacenDatos.ultimaActividad.keySet()) {
                 if (ahora - AlmacenDatos.ultimaActividad.get(idSensor) > 60000) {
-                    AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, "SYS", "DISCONNECTED", ahora)); // 
+                    AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, "SYS", "DISCONNECTED", ahora));
                 }
             }
         }
