@@ -115,4 +115,16 @@ public class ServidorIndustrialImpl extends UnicastRemoteObject implements IServ
         }
         return respuesta;
     }
+    
+    @Override
+    public synchronized RespuestaServidor configurarUmbrales(String idSensor, String variable, double min, double max) throws RemoteException {
+        // Actualizamos actividad
+        AlmacenDatos.ultimaActividad.put(idSensor, System.currentTimeMillis());
+        
+        // Reutilizamos la lógica del mapa (crear si no existe y guardar umbral)
+        AlmacenDatos.umbrales.putIfAbsent(idSensor, new HashMap<>());
+        AlmacenDatos.umbrales.get(idSensor).put(variable, new double[]{min, max});
+        
+        return new RespuestaServidor(200, "OK_CONFIGURADO");
+    }
 }

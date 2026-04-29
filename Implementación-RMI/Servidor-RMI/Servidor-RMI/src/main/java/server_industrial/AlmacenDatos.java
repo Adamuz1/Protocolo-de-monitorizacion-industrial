@@ -21,9 +21,9 @@ public class AlmacenDatos {
 
     public static class Medicion {
 
-        String idSensor, variable, unidad;
-        double valor;
-        long marcaTemporal;
+        public String idSensor, variable, unidad;
+        public double valor;
+        public long marcaTemporal;
 
         public Medicion(String idSensor, String variable, double valor, String unidad, long marcaTemporal) {
             this.idSensor = idSensor;
@@ -36,8 +36,8 @@ public class AlmacenDatos {
 
     public static class Alerta {
 
-        String idSensor, variable, razon;
-        long marcaTemporal;
+        public String idSensor, variable, razon;
+        public long marcaTemporal;
 
         public Alerta(String idSensor, String variable, String razon, long marcaTemporal) {
             this.idSensor = idSensor;
