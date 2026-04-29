@@ -18,7 +18,10 @@ public class Servidor {
             System.out.println("Servidor RMI Industrial listo y esperando peticiones...");
             
             // 4. (Aquí puedes pegar tu hilo monitor y tu bucle while del menú original)
-            
+            // 4. Arrancamos el simulador automático
+            SimuladorSensores simulador = new SimuladorSensores(servicio);
+            Thread hiloSimulador = new Thread(simulador);
+            hiloSimulador.start();
         } catch (Exception e) {
             System.err.println("Error grave en el servidor: " + e.getMessage());
             e.printStackTrace();

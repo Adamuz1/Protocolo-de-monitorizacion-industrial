@@ -34,14 +34,15 @@ public class AlmacenDatos {
         }
     }
 
-    public static class Alerta {
-
+public static class Alerta {
         public String idSensor, variable, razon;
+        public double valorDisparo; // ¡Añadimos esta línea para guardar el número!
         public long marcaTemporal;
 
-        public Alerta(String idSensor, String variable, String razon, long marcaTemporal) {
+        public Alerta(String idSensor, String variable, double valorDisparo, String razon, long marcaTemporal) {
             this.idSensor = idSensor;
             this.variable = variable;
+            this.valorDisparo = valorDisparo;
             this.razon = razon;
             this.marcaTemporal = marcaTemporal;
         }
