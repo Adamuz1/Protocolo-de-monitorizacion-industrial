@@ -23,14 +23,11 @@ public class ServidorIndustrialImpl extends UnicastRemoteObject implements IServ
         AlmacenDatos.historialMediciones.add(new AlmacenDatos.Medicion(idSensor, variable, valor, unidad, timestamp));
 
         // 2. Lógica del tanque (Reutilizada)
-        if (variable.startsWith("HUM")) {
-            if (variable.equals("HUM2") && valor == 0.0) {
-                AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, "LOW_WATER", timestamp));
+        if (variable.equals("HUM2") && valor == 0.0) {
+                AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, valor, "LOW_WATER", timestamp));
             } else if (variable.equals("HUM1") && valor == 0.0) {
-                AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, "TANK_EMPTY", timestamp));
+                AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, valor, "TANK_EMPTY", timestamp));
             }
-            return new RespuestaServidor(200, "OK");
-        }
 
         // 3. Lógica de umbrales numéricos (Reutilizada)
         double[] limites = null;
@@ -41,7 +38,7 @@ public class ServidorIndustrialImpl extends UnicastRemoteObject implements IServ
         }
 
         if (limites != null && (valor < limites[0] || valor > limites[1])) {
-            AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, "OUT_OF_RANGE", timestamp));
+            AlmacenDatos.historialAlertas.add(new AlmacenDatos.Alerta(idSensor, variable, valor, "OUT_OF_RANGE", timestamp));
         }
 
         return new RespuestaServidor(200, "OK");
@@ -104,8 +101,11 @@ public class ServidorIndustrialImpl extends UnicastRemoteObject implements IServ
             if (a.idSensor.equals(idSensor) && a.variable.equals(variable) && a.marcaTemporal >= inicio && a.marcaTemporal <= tiempoFinReal) {
                 String fechaLegible = formatoVista.format(new Date(a.marcaTemporal * 1000L));
                 
-                // Descomponemos: Fecha, Variable, Razón de la alerta
-                respuesta.agregarRegistro(new String[]{fechaLegible, a.variable, a.razon});
+                // Formateamos para que se vea así: TEMP (55.4)
+                String infoVariable = a.variable + " (" + a.valorDisparo + ")";
+                
+                // Descomponemos: Fecha, Info de Variable, Razón
+                respuesta.agregarRegistro(new String[]{fechaLegible, infoVariable, a.razon});
             }
         }
         
