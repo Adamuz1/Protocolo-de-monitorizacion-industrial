@@ -73,18 +73,26 @@ public class ServidorIndustrialImpl extends UnicastRemoteObject implements IServ
         // Actualizamos actividad
         AlmacenDatos.ultimaActividad.put(idSensor, System.currentTimeMillis());
         
-        // Reutilizamos la búsqueda en el AlmacenDatos
+        double[] limites = null;
+
+        // 1. Primero miramos si el cliente ha configurado un umbral ESPECÍFICO para este sensor
         if (AlmacenDatos.umbrales.containsKey(idSensor) && AlmacenDatos.umbrales.get(idSensor).containsKey(variable)) {
-            double[] limites = AlmacenDatos.umbrales.get(idSensor).get(variable);
-            
+            limites = AlmacenDatos.umbrales.get(idSensor).get(variable);
+        } 
+        // 2. Si no tiene uno específico, cogemos el GENERAL predeterminado de esa variable
+        else if (AlmacenDatos.umbralesGenerales.containsKey(variable)) {
+            limites = AlmacenDatos.umbralesGenerales.get(variable);
+        }
+
+        // Si hemos encontrado límites (ya sean específicos o generales), los devolvemos
+        if (limites != null) {
             RespuestaServidor respuesta = new RespuestaServidor(200, "OK");
-            
             // Guardamos los límites descompuestos en el array estructurado
             respuesta.agregarRegistro(new String[]{String.valueOf(limites[0]), String.valueOf(limites[1])});
             return respuesta;
         }
         
-        // Caso inválido ya definido en el protocolo original
+        // Solo devolverá 404 si pides una variable rara que no existe (ej. "LUZ")
         return new RespuestaServidor(404, "NO_ENCONTRADO");
     }
     @Override

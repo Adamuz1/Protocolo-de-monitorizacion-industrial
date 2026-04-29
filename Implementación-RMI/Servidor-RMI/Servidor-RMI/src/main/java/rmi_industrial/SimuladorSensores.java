@@ -6,7 +6,6 @@ public class SimuladorSensores implements Runnable {
     
     private final IServidorIndustrial servicioServidor;
 
-    // Pasamos la referencia del servidor para poder usar el método enviarMedicion
     public SimuladorSensores(IServidorIndustrial servicioServidor) {
         this.servicioServidor = servicioServidor;
     }
@@ -15,6 +14,9 @@ public class SimuladorSensores implements Runnable {
     public void run() {
         Random rand = new Random();
         System.out.println("[SIMULADOR] Iniciando generación automática de datos...");
+        
+        // El tanque empieza lleno (Nivel 3)
+        int nivelTanque = 3; 
 
         while (true) {
             try {
@@ -22,15 +24,28 @@ public class SimuladorSensores implements Runnable {
                 Thread.sleep(5000); 
                 long timestamp = System.currentTimeMillis() / 1000L;
 
-                // --- Simulación del Tanque de Agua (HUM1) ---
-                // 80% de probabilidad de estar mojado (1.0), 20% de secarse (0.0 -> genera alerta)
-                double hum1 = rand.nextDouble() > 0.2 ? 1.0 : 0.0;
+                // --- 1. SIMULACIÓN DEL TANQUE MULTISENSOR ---
+                // Hacemos que el nivel del tanque cambie aleatoriamente (-1, 0, o +1)
+                int cambio = rand.nextInt(3) - 1; 
+                nivelTanque += cambio;
+                
+                // Ponemos topes para que no baje de 0 ni pase de 3
+                if (nivelTanque > 3) nivelTanque = 3;
+                if (nivelTanque < 0) nivelTanque = 0;
+
+                // Calculamos qué sensores están mojados (1.0) y cuáles secos (0.0) según el nivel
+                double hum3 = (nivelTanque >= 3) ? 1.0 : 0.0;
+                double hum2 = (nivelTanque >= 2) ? 1.0 : 0.0;
+                double hum1 = (nivelTanque >= 1) ? 1.0 : 0.0;
+
+                // Enviamos las 3 mediciones al servidor RMI al mismo tiempo
+                servicioServidor.enviarMedicion("TANQUE_A", timestamp, "HUM3", hum3, "%");
+                servicioServidor.enviarMedicion("TANQUE_A", timestamp, "HUM2", hum2, "%");
                 servicioServidor.enviarMedicion("TANQUE_A", timestamp, "HUM1", hum1, "%");
 
-                // --- Simulación de un Motor (TEMP) ---
-                // Temperatura base de 40ºC + hasta 20ºC aleatorios
+                // --- 2. SIMULACIÓN DEL MOTOR (TEMP) ---
                 double tempMotor = 40.0 + (rand.nextDouble() * 20.0);
-                tempMotor = Math.round(tempMotor * 100.0) / 100.0; // Redondear a 2 decimales
+                tempMotor = Math.round(tempMotor * 100.0) / 100.0;
                 servicioServidor.enviarMedicion("MOTOR_01", timestamp, "TEMP", tempMotor, "C");
 
             } catch (Exception e) {
